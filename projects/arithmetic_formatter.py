@@ -1,6 +1,6 @@
 import re
 
-def arithmetic_formatter(problems, display_answer_boolean = False):
+def arithmetic_arranger(problems, display_answer_boolean = False):
     
     line1 = ""
     line2 = ""
@@ -60,4 +60,4 @@ def arithmetic_formatter(problems, display_answer_boolean = False):
     
     print(arranged_problems)
 
-arithmetic_formatter(["32 + 8", "1 - 3801", "9999 + 9999", "523 - 49"], True)
+arithmetic_arranger(['3 + 855', '988 + 40'])
