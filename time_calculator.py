@@ -1,11 +1,10 @@
 def add_time(start_time, duration, day = None):
-
+    
     def split_time(time):
         time_obj = {
             "hour": None,
             "minute": None,
             "time_of_day": None,
-            "duration": False
         }
 
         split_time = time.split(":")
@@ -34,11 +33,13 @@ def add_time(start_time, duration, day = None):
     if calculated_time["minutes"] > 60:
         calculated_time["minutes"] = calculated_time["minutes"] - 60
         calculated_time["hours"] = calculated_time["hours"] + 1
-
+        
     if calculated_time["hours"] >= 12:
+        calculated_time["hours"] = calculated_time["hours"] % 12
         calculated_time["hours"] = (
-            (calculated_time["hours"] - 12) if calculated_time["hours"] > 12 and calculated_time["hours"] < 24 else 
-            12
+            12 if calculated_time["hours"] == 24 else 
+            12 if calculated_time["hours"] == 0 else
+            calculated_time["hours"]
         )
         
         calculated_time["time_of_day"] = (
@@ -46,7 +47,7 @@ def add_time(start_time, duration, day = None):
             "PM"
         )
 
-    print(f'{calculated_time["hours"]}:{calculated_time["minutes"]:02d} {calculated_time["time_of_day"]}')
+    print(f'{calculated_time["hours"]}:{calculated_time["minutes"]:02d} {calculated_time["time_of_day"]}\n')
 
 add_time("3:00 PM", "3:10")
 # Returns: 6:10 PM
