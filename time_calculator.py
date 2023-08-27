@@ -46,7 +46,6 @@ def add_time(start_time, duration, day = None):
     if calculated_time["minutes"] >= 60:
         calculated_time["minutes"] = calculated_time["minutes"] - 60
         calculated_time["hours"] = calculated_time["hours"] + 1
-        
     if calculated_time["hours"] >= 12:
         calculated_time["hours"] = calculated_time["hours"] % 12
         calculated_time["hours"] = (
@@ -59,16 +58,16 @@ def add_time(start_time, duration, day = None):
             "AM" if calculated_time["time_of_day"] == "PM" else
             "PM"
         )
-        
         if given_time_of_day == "AM" and calculated_time["time_of_day"] == "PM":
-            if day != None: calculated_time["day"] = day.lower()
+            if day != None: calculated_time["day"] = day.lower().capitalize()
         elif given_time_of_day == "PM" and calculated_time["time_of_day"] == "AM":
             if day != None:
                 day_index = days.index(day.lower())
-                calculated_time["day"] = days[day_index + (round(duration_time_obj["hour"] / 24) + 1)]
+                calculated_time["day"] = days[day_index + (round(duration_time_obj["hour"] / 24) + 1)].capitalize()
+
                 calculated_time["days_apart"] = (
-                    f'({round(duration_time_obj["hour"] / 24 ) + 1} days later)' if round(duration_time_obj["hour"] / 24) + 1 > 1 else
-                    f'(next day)' if round(duration_time_obj["hour"] / 24) <= 1 else
+                    f'({(24 // calculated_time["hours"])} days later)' if 24 // calculated_time["hours"] > 1 else
+                    f'(next day)' if 24 // calculated_time["hours"] <= 1 else
                     calculated_time["days_apart"]
                 )
             elif day == None:
