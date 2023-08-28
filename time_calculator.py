@@ -33,31 +33,24 @@ def add_time(start_time, duration, day = None):
     }
     given_time_of_day = calculated_time["time_of_day"]
     
-    days = [
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday"
-    ]
+    days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
     
     if calculated_time["minutes"] >= 60:
         calculated_time["minutes"] = calculated_time["minutes"] - 60
         calculated_time["hours"] = calculated_time["hours"] + 1
     if calculated_time["hours"] >= 12:
+
         calculated_time["hours"] = calculated_time["hours"] % 12
         calculated_time["hours"] = (
             12 if calculated_time["hours"] == 24 else 
             12 if calculated_time["hours"] == 0 else
             calculated_time["hours"]
         )
-
         calculated_time["time_of_day"] = (
             "AM" if calculated_time["time_of_day"] == "PM" else
             "PM"
         )
+        
         if given_time_of_day == "AM" and calculated_time["time_of_day"] == "PM":
             if day != None: calculated_time["day"] = day.lower().capitalize()
         elif given_time_of_day == "PM" and calculated_time["time_of_day"] == "AM":
@@ -79,21 +72,27 @@ def add_time(start_time, duration, day = None):
 
     print(f'{calculated_time["hours"]}:{calculated_time["minutes"]:02d} {calculated_time["time_of_day"]}{", " + calculated_time["day"] if calculated_time["day"] != "" else ""} {calculated_time["days_apart"] if calculated_time["days_apart"] != "" else ""}\n')
     
-
-add_time("3:00 PM", "3:10")
+#add_time("3:00 PM", "3:10")
 # Returns: 6:10 PM
 
-add_time("11:30 AM", "2:32", "Monday")
+#add_time("11:30 AM", "2:32", "Monday")
 # Returns: 2:02 PM, Monday
 
-add_time("11:43 AM", "00:20")
+#add_time("11:43 AM", "00:20")
 # Returns: 12:03 PM
 
-add_time("10:10 PM", "3:30")
+#add_time("10:10 PM", "3:30")
 # Returns: 1:40 AM (next day)
 
-add_time("11:43 PM", "24:20", "tueSday")
+#add_time("11:43 PM", "24:20", "tueSday")
 # Returns: 12:03 AM, Thursday (2 days later)
 
-add_time("6:30 PM", "205:12")
+#add_time("6:30 PM", "205:12")
 # Returns: 7:42 AM (9 days later)
+
+add_time("11:55 AM", "3:12")
+add_time("8:16 PM", "466:02")
+add_time("9:15 PM", "5:30")
+add_time("5:01 AM", "0:00")
+add_time("11:40 AM", "0:25")
+add_time("3:30 PM", "2:12")
