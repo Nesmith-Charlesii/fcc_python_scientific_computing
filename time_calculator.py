@@ -44,12 +44,22 @@ def add_time(start_time, duration, day = None):
         pm_to_24hr_conversion[0 + start_time_obj["hours"]] if pm_to_24hr_conversion[0 + start_time_obj["hours"]] in pm_to_24hr_conversion else
         False
     ) 
-    print(twenty_four_hour_format)
+
     if twenty_four_hour_format == False:
         return "Start time must follow 12 hour format"
     
-    calculated_time_obj["hours"] = twenty_four_hour_format
-    
+    calculated_time_obj["hours"] = (twenty_four_hour_format + duration_time_obj["hours"]) % 24
+
+    if calculated_time_obj["minutes"] >= 60:
+        calculated_time_obj["minutes"] = calculated_time_obj["minutes"] - 60
+        calculated_time_obj["hours"] += 1
+
+    if calculated_time_obj["hours"] in pm_to_24hr_conversion:
+        calculated_time_obj["time_of_day"] = "PM"
+    elif calculated_time_obj["hours"] in am_to_24hr_conversion or calculated_time_obj["hours"] == 24:
+        calculated_time_obj["time_of_day"] = "AM"
+
+    print(calculated_time_obj, "\n")
     
 add_time("3:00 PM", "3:10")
 # Returns: 6:10 PM
