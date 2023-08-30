@@ -49,7 +49,7 @@ def add_time(start_time, duration, day = None):
         return "Start time must follow 12 hour format"
     
     calculated_time_obj["hours"] = (twenty_four_hour_format + duration_time_obj["hours"]) % 24
-
+    
     if calculated_time_obj["minutes"] >= 60:
         calculated_time_obj["minutes"] = calculated_time_obj["minutes"] - 60
         calculated_time_obj["hours"] += 1
@@ -58,14 +58,15 @@ def add_time(start_time, duration, day = None):
         calculated_time_obj["time_of_day"] = "PM"
     elif calculated_time_obj["hours"] in am_to_24hr_conversion or calculated_time_obj["hours"] == 24:
         calculated_time_obj["time_of_day"] = "AM"
-
+    
+    days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    
     calculated_time_obj["days_apart"] = (
-        round(duration_time_obj["hours"] / 24) if duration_time_obj["hours"] >= 24 else 
+        round(duration_time_obj["hours"] / 24) if duration_time_obj["hours"] > 24 else 
+        round(duration_time_obj["hours"] / 12) if duration_time_obj["hours"] <= 24 else 
         1 if round(duration_time_obj["hours"] / 24) == 1 else
         calculated_time_obj["days_apart"]
     )
-
-    days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
     if day != None:
         if calculated_time_obj["days_apart"] < 1:
@@ -81,16 +82,16 @@ def add_time(start_time, duration, day = None):
     if calculated_time_obj["hours"] > 12:
         calculated_time_obj["hours"] = calculated_time_obj["hours"] - 12
 
-    print(f'{calculated_time_obj["hours"]}:{calculated_time_obj["minutes"]:02d} {calculated_time_obj["time_of_day"]}{"," + " " + calculated_time_obj["day"].capitalize() if calculated_time_obj["day"] != None else " "} {"(" + str(calculated_time_obj["days_apart"]) + " days later)" if calculated_time_obj["days_apart"] > 1 else "(next day)" if calculated_time_obj["days_apart"] == 1 else ""}')
+    print(f'{calculated_time_obj["hours"]}:{calculated_time_obj["minutes"]:02d} {calculated_time_obj["time_of_day"]}{"," + " " + calculated_time_obj["day"].capitalize() if calculated_time_obj["day"] != None else ""} {"(" + str(calculated_time_obj["days_apart"]) + " days later)" if calculated_time_obj["days_apart"] > 1 else "(next day)" if calculated_time_obj["days_apart"] == 1 else ""}')
     
     
-#add_time("3:00 PM", "3:10")
+add_time("3:00 PM", "3:10")
 # Returns: 6:10 PM
 
-#add_time("11:30 AM", "2:32", "Monday")
+add_time("11:30 AM", "2:32", "Monday")
 # Returns: 2:02 PM, Monday
 
-#add_time("11:43 AM", "00:20")
+add_time("11:43 AM", "00:20")
 # Returns: 12:03 PM
 
 add_time("10:10 PM", "3:30")
@@ -99,5 +100,5 @@ add_time("10:10 PM", "3:30")
 add_time("11:43 PM", "24:20", "tueSday")
 # Returns: 12:03 AM, Thursday (2 days later)
 
-#add_time("6:30 PM", "205:12")
+add_time("6:30 PM", "205:12")
 # Returns: 7:42 AM (9 days later)
