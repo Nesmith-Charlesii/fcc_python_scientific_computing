@@ -78,7 +78,10 @@ def add_time(start_time, duration, day = None):
                 days[calculated_day_index - len(days)]
             )
 
-    print(f'{calculated_time_obj["hours"]}:{calculated_time_obj["minutes"]} {calculated_time_obj["time_of_day"]}{"," + " " + calculated_time_obj["day"].capitalize() if calculated_time_obj["day"] != None else " "} {"(" + str(calculated_time_obj["days_apart"]) + " days later)" if calculated_time_obj["days_apart"] > 1 else "next day" if calculated_time_obj["days_apart"] == 1 else ""}')
+    if calculated_time_obj["hours"] > 12:
+        calculated_time_obj["hours"] = calculated_time_obj["hours"] - 12
+
+    print(f'{calculated_time_obj["hours"]}:{calculated_time_obj["minutes"]:02d} {calculated_time_obj["time_of_day"]}{"," + " " + calculated_time_obj["day"].capitalize() if calculated_time_obj["day"] != None else " "} {"(" + str(calculated_time_obj["days_apart"]) + " days later)" if calculated_time_obj["days_apart"] > 1 else "next day" if calculated_time_obj["days_apart"] == 1 else ""}')
     
     
 #add_time("3:00 PM", "3:10")
