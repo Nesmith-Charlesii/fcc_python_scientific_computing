@@ -91,5 +91,4 @@ def add_time(start, duration, day = None):
 
     print(new_time)
     
-    
 add_time("8:16 PM", "466:02")
