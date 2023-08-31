@@ -30,26 +30,33 @@ def add_time(start, duration, day = None):
         "minutes": start_time_obj["minutes"] + duration_time_obj["minutes"],
         "time_of_day": start_time_obj["time_of_day"],
         "day": day,
-        "days_apart": int()
+        "days_apart": None
     }
-
-    calculated_time_obj["hours"] = calculated_time_obj["hours"] % 24
     
     if calculated_time_obj["minutes"] >= 60:
         calculated_time_obj["minutes"] = calculated_time_obj["minutes"] - 60
         calculated_time_obj["hours"] += 1
 
-    calculated_time_obj["time_of_day"] = (
-        "AM" if calculated_time_obj["hours"] < 12 and calculated_time_obj["time_of_day"] == "AM" else 
-        "AM" if calculated_time_obj["hours"] > 11 and calculated_time_obj["time_of_day"] == "PM" else
+    twenty_four_hour_format = calculated_time_obj["hours"] % 24
 
-        "PM" if calculated_time_obj["hours"] < 12 and calculated_time_obj["time_of_day"] == "PM" else
-        "PM" if calculated_time_obj["hours"] > 11 and calculated_time_obj["time_of_day"] == "AM" else 
+    calculated_time_obj["time_of_day"] = (
+        "AM" if twenty_four_hour_format < 12 and calculated_time_obj["time_of_day"] == "AM" else 
+        "AM" if twenty_four_hour_format > 11 and calculated_time_obj["time_of_day"] == "PM" else
+
+        "PM" if twenty_four_hour_format < 12 and calculated_time_obj["time_of_day"] == "PM" else
+        "PM" if twenty_four_hour_format > 11 and calculated_time_obj["time_of_day"] == "AM" else 
         False
     )
+    #calculated_time_obj["hours"] = twenty_four_hour_format
 
-    print(f'{calculated_time_obj["hours"]}:{calculated_time_obj["minutes"]:02d} {calculated_time_obj["time_of_day"]}')
     
+    if calculated_time_obj["time_of_day"] == "PM" and calculated_time_obj["hours"] < 24:
+        calculated_time_obj["days_apart"] = calculated_time_obj["days_apart"]
+    else:
+        calculated_time_obj["days_apart"] = round(calculated_time_obj["hours"] / 24)
+        
+    print(f'{calculated_time_obj["hours"]}:{calculated_time_obj["minutes"]:02d} {calculated_time_obj["time_of_day"]} {calculated_time_obj["days_apart"] if calculated_time_obj["days_apart"] != None else ""}\n')
+
     # days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     
     # calculated_time_obj["days_apart"] = (
@@ -111,12 +118,3 @@ add_time("11:43 PM", "24:20", "tueSday")
 
 add_time("6:30 PM", "205:12")
 # Returns: 7:42 AM (9 days later)
-
-# if given_tod == "AM":
-    # if ((hours + duration[hours]) % 24) > 11:
-        # calc_tod = "PM"
-    # elif ((hours + duration[hours]) % 24) < 12:
-        # calc_hour = ((hours + duration[hours]) % 24)
-# if given_tod = "PM":
-    # if ((hours + duration[hours]) % 24) > 11:
-        # calc_tod = "AM"
