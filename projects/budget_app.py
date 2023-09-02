@@ -3,7 +3,7 @@ class Category:
     def __init__(self, category):
         self.category = category
         self.ledger = []
-        print(f'{self.category} budget instantiated')
+        #print(f'{self.category} budget instantiated')
 
     def deposit(self, amount, description=""):
         deposit_obj = {
@@ -11,13 +11,13 @@ class Category:
             "description": description
         }
         self.ledger.append(deposit_obj)
-        print(f'{self.category} ledger: {self.ledger}', "\n")
+        #print(f'{self.category} ledger: {self.ledger}')
 
-    def withdraw(self, amount):
+    def withdraw(self, amount, description):
         funds = self.check_funds(amount)
         if funds:
-            self.ledger.append({"amount": -amount})
-            print(self.ledger, "\n")
+            self.ledger.append({"amount": -amount, "description": description})
+            #print(self.ledger)
             return True
         return False
     
@@ -25,7 +25,7 @@ class Category:
         balance =  0
         for i in self.ledger:
             balance += i["amount"]
-        print(f'{self.category} balance: {balance}', "\n")
+        #print(f'{self.category} balance: {balance}')
         return balance
     
     def transfer(self, amount, budget_category):
@@ -33,10 +33,10 @@ class Category:
         if funds:
 
             self.ledger.append({"amount": -amount, "description": f'Transfer to {budget_category.category}'})
-            print(f'Transfer to {budget_category.category}')
+            #print(f'Transfer to {budget_category.category}')
 
             budget_category.deposit(amount, f'Transfer from {self.category}')
-            print(f'Transfer from {self.category}', "\n")
+            #print(f'Transfer from {self.category}')
 
             return True
         return False
@@ -56,9 +56,20 @@ class Category:
             split_category.append("*")
             split_category.insert(0, "*")
 
-        banner = " ".join(split_category)
+        banner = " ".join(split_category).strip()
         print(banner)
 
+        for i in self.ledger:
+            if len(i["description"]) > 23:
+                display_des = i["description"][0:23]
+                print(display_des)
 
-food = Category("food")
+food = Category("Food")
+clothing = Category("Clothing")
+
+food.deposit(1000, "initial deposit")
+food.withdraw(10.15, "groceries")
+food.withdraw(15.89, "restaurant and more food")
+food.transfer(50, clothing)
+
 food.display_budget()
