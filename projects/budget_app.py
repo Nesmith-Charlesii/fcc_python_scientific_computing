@@ -55,21 +55,36 @@ class Category:
         while len(split_category) < 30:
             split_category.append("*")
             split_category.insert(0, "*")
-
+        
         banner = " ".join(split_category).strip()
         print(banner)
 
         for i in self.ledger:
+            description = ""
+            amount = None
             if len(i["description"]) > 23:
-                display_des = i["description"][0:23]
-                print(display_des)
+                description += i["description"][0:23]
+            else: description += i["description"]
+            
+            # Float the amount first and then change to str data type to use the index method
+            amount = str(float(i["amount"]))
+            decimal_index = amount.index(".")
+            amount = amount[0:(decimal_index + 3)]
+
+            # Check that all amounts end with 2 digits
+            split_decimal = amount.split(".")
+            if len(split_decimal[1]) < 2:
+                split_decimal[1] = split_decimal[1] + "0"
+                amount = ".".join(split_decimal)
+
+            print(f'{description} {amount}')
 
 food = Category("Food")
 clothing = Category("Clothing")
 
 food.deposit(1000, "initial deposit")
 food.withdraw(10.15, "groceries")
-food.withdraw(15.89, "restaurant and more food")
+food.withdraw(15.898434, "restaurant and more food")
 food.transfer(50, clothing)
 
 food.display_budget()
