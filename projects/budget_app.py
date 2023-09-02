@@ -56,7 +56,7 @@ class Category:
             split_category.append("*")
             split_category.insert(0, "*")
         
-        banner = " ".join(split_category).strip()
+        banner = "".join(split_category)
         print(banner)
 
         for i in self.ledger:
@@ -77,8 +77,13 @@ class Category:
                 split_decimal[1] = split_decimal[1] + "0"
                 amount = ".".join(split_decimal)
 
-            print(f'{description} {amount}')
+            desc_length = len(description)
+            amount_length = len(amount)
+            right_align = 30 - desc_length
 
+            print(f'{description}{amount:>{right_align}}')
+            
+            
 food = Category("Food")
 clothing = Category("Clothing")
 
