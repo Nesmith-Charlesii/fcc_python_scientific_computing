@@ -78,12 +78,12 @@ class Category:
                 amount = ".".join(split_decimal)
 
             desc_length = len(description)
-            amount_length = len(amount)
             right_align = 30 - desc_length
 
             print(f'{description}{amount:>{right_align}}')
-            
-            
+            # ACCOUNT FOR TRANSACTION GREATER THAN 7 DIGITS
+
+
 food = Category("Food")
 clothing = Category("Clothing")
 
