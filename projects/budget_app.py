@@ -11,11 +11,11 @@ class Category:
             "description": description
         }
         self.ledger.append(deposit_obj)
-        print(self.ledger)
+        print(f'{self.category} ledger: {self.ledger}', "\n")
 
     def withdraw(self, amount):
-        balance = self.get_balance()
-        if balance > amount:
+        funds = self.check_funds(amount)
+        if funds:
             self.ledger.append({"amount": -amount})
             print(self.ledger, "\n")
             return True
@@ -25,21 +25,28 @@ class Category:
         balance =  0
         for i in self.ledger:
             balance += i["amount"]
-        print(f'Balance: {balance}', "\n")
+        print(f'{self.category} balance: {balance}', "\n")
         return balance
     
     def transfer(self, amount, budget_category):
-        balance = self.get_balance()
-        if balance > amount:
+        funds = self.check_funds(amount)
+        if funds:
 
             self.ledger.append({"amount": -amount, "description": f'Transfer to {budget_category.category}'})
             print(f'Transfer to {budget_category.category}')
 
             budget_category.deposit(amount, f'Transfer from {self.category}')
-            print(f'Transfer from {self.category}')
+            print(f'Transfer from {self.category}', "\n")
 
             return True
         return False
+    
+    def check_funds(self, amount):
+        balance = self.get_balance()
+        if balance < amount:
+            return False
+        return True
+
         
 entertainment = Category("entertainment")
 entertainment.deposit(500, "entertainment system")
