@@ -47,13 +47,18 @@ class Category:
             return False
         return True
 
-        
-entertainment = Category("entertainment")
-entertainment.deposit(500, "entertainment system")
+    def display_budget(self):
+        # To split individual characters, use 'list' instead of split method
+        category = self.category
+        split_category = list(category)
 
-clothing = Category("clothing")
-clothing.deposit(300, "casual wear")
+        while len(split_category) < 30:
+            split_category.append("*")
+            split_category.insert(0, "*")
 
-entertainment.transfer(200, clothing)
-entertainment.get_balance()
-clothing.get_balance()
+        banner = " ".join(split_category)
+        print(banner)
+
+
+food = Category("food")
+food.display_budget()
