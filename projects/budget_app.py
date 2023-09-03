@@ -1,3 +1,5 @@
+import math
+
 class Category:
 
     def __init__(self, category):
@@ -86,31 +88,26 @@ class Category:
         return True
 
 
-# def create_spend_chart(categories):
+def create_spend_chart(categories):
 
-#     chart_title = "Percentage spent by category"
-#     print(categories)
-#     category_index = (len(categories) - 1)
-#     expense_percentage = {}
+    chart_title = "Percentage spent by category"
+    category_index = (len(categories) - 1)
+    expense_percentage = {}
     
-#     def percent_spent(category_index):
-#         if category_index == 0:
-#             return "recursion complete"
-#         else:
-#             pass
-            # print(categories[category_index])
-            # category_name = categories[category_index].category
-            # expense_sum = 0
+    def percent_spent(category_index):
+        if category_index < 0:
+            return "recursion complete"
+        else:
+            category_name = categories[category_index].category
+            expense_sum = 0
 
-            # for i in categories[category_index]:
-            #     print(i)
-                # if i["amount"] < 0:
-                #     print(i["amount"])
-                #     expense_sum += i["amount"]
-            # print(f'{chart_title}\n{expense_sum}')
-            # return percent_spent(category_index - 1)
+            for i in categories[category_index].ledger:
+                if i["amount"] < 0:
+                    expense_sum += math.floor(abs(i["amount"]))
+            print(f'{chart_title}\n{category_name}: {expense_sum}%\n')
+            return percent_spent(category_index - 1)
         
-    # percent_spent(category_index)
+    percent_spent(category_index)
 
     
 food = Category("Food")
@@ -120,6 +117,5 @@ food.deposit(1000, "initial deposit")
 food.withdraw(10.15, "groceries")
 food.withdraw(15.898434, "restaurant and more food")
 food.transfer(50, clothing)
-
-print(food)
-#create_spend_chart([food, clothing])
+# print(food)
+create_spend_chart([food, clothing])
