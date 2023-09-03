@@ -5,6 +5,44 @@ class Category:
         self.ledger = []
         #print(f'{self.category} budget instantiated')
 
+    def __str__(self):
+        # To split individual characters, use 'list' instead of split method
+        category = self.category
+        split_category = list(category)
+        ledger_str = ""
+
+        while len(split_category) < 30:
+            split_category.append("*")
+            split_category.insert(0, "*")
+        
+        banner = "".join(split_category)
+        print(banner)
+
+        for i in self.ledger:
+            description = ""
+            amount = None
+            if len(i["description"]) > 23:
+                description += i["description"][0:23]
+            else: description += i["description"]
+            
+            # Float the amount first and then change to str data type to use the index method
+            amount = str(float(i["amount"]))
+            decimal_index = amount.index(".")
+            amount = amount[0:(decimal_index + 3)]
+
+            # Check that all amounts end with 2 digits
+            split_decimal = amount.split(".")
+            if len(split_decimal[1]) < 2:
+                split_decimal[1] = split_decimal[1] + "0"
+                amount = ".".join(split_decimal)
+
+            desc_length = len(description)
+            right_align = 30 - desc_length
+
+            ledger_str += f'{description}{amount:>{right_align}}\n'
+            # ACCOUNT FOR TRANSACTION GREATER THAN 7 DIGITS
+        return ledger_str
+
     def deposit(self, amount, description=""):
         deposit_obj = {
             "amount": amount,
@@ -47,55 +85,19 @@ class Category:
             return False
         return True
 
-    def display_budget(self):
-        # To split individual characters, use 'list' instead of split method
-        category = self.category
-        split_category = list(category)
 
-        while len(split_category) < 30:
-            split_category.append("*")
-            split_category.insert(0, "*")
-        
-        banner = "".join(split_category)
-        print(banner)
+# def create_spend_chart(categories):
 
-        for i in self.ledger:
-            description = ""
-            amount = None
-            if len(i["description"]) > 23:
-                description += i["description"][0:23]
-            else: description += i["description"]
-            
-            # Float the amount first and then change to str data type to use the index method
-            amount = str(float(i["amount"]))
-            decimal_index = amount.index(".")
-            amount = amount[0:(decimal_index + 3)]
-
-            # Check that all amounts end with 2 digits
-            split_decimal = amount.split(".")
-            if len(split_decimal[1]) < 2:
-                split_decimal[1] = split_decimal[1] + "0"
-                amount = ".".join(split_decimal)
-
-            desc_length = len(description)
-            right_align = 30 - desc_length
-
-            print(f'{description}{amount:>{right_align}}')
-            # ACCOUNT FOR TRANSACTION GREATER THAN 7 DIGITS
-
-
-def create_spend_chart(categories):
-
-    chart_title = "Percentage spent by category"
-    print(categories)
-    category_index = (len(categories) - 1)
-    expense_percentage = {}
+#     chart_title = "Percentage spent by category"
+#     print(categories)
+#     category_index = (len(categories) - 1)
+#     expense_percentage = {}
     
-    def percent_spent(category_index):
-        if category_index == 0:
-            return "recursion complete"
-        else:
-            pass
+#     def percent_spent(category_index):
+#         if category_index == 0:
+#             return "recursion complete"
+#         else:
+#             pass
             # print(categories[category_index])
             # category_name = categories[category_index].category
             # expense_sum = 0
@@ -118,5 +120,6 @@ food.deposit(1000, "initial deposit")
 food.withdraw(10.15, "groceries")
 food.withdraw(15.898434, "restaurant and more food")
 food.transfer(50, clothing)
-#food.display_budget()
-create_spend_chart([food, clothing])
+
+print(food)
+#create_spend_chart([food, clothing])
