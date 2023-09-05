@@ -91,34 +91,42 @@ class Category:
 def create_spend_chart(categories):
 
     category_index = (len(categories) - 1)
-    return_str = ""
+    percent_obj = {}
     
-    def percentage_spent(category_index):
+    def calculate_percentage(category_index):
         if category_index < 0:
-            print(return_str)
+            print(percent_obj)
         else:
+            category = categories[category_index].category
+            start_balance = next((i for i in categories[category_index].ledger if i['description'] == "initial deposit"), None)
             expense_sum = 0
+
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
-                    expense_sum += math.floor(abs(i["amount"]))
-            
-            for i in range(0,101,10):
-                print(f'{i:>{3}}|')
-            return percentage_spent(category_index - 1)
+                    expense_sum += (math.floor(abs(i["amount"])) / start_balance["amount"]) * 100
+            percent_obj[category] = expense_sum
+            return calculate_percentage(category_index - 1)
         
-    percentage_spent(category_index)
+    calculate_percentage(category_index)
+
     
 
 food = Category("Food")
 clothing = Category("Clothing")
 
 food.deposit(1000, "initial deposit")
-food.withdraw(10.15, "groceries")
+food.withdraw(220.15, "groceries")
 food.withdraw(15.898434, "restaurant and more food")
+food.withdraw(20, "starbucks")
+food.withdraw(32, "thaiphoon bistro")
+food.withdraw(30, "rock n' roll sushi")
+food.withdraw(70, "Cowfish Sushi Bar")
+food.withdraw(65, "Crafty Crab")
 food.transfer(50, clothing)
 
-clothing.withdraw(120, "Sunday best")
-clothing.withdraw(80, "Suit")
-clothing.withdraw(65, "Athletic Shoes")
-# print(food)
+clothing.deposit(600, "initial deposit")
+clothing.withdraw(80.15, "sunday best")
+clothing.withdraw(55.00, "atheltic shoes")
+clothing.withdraw(120.00, "casual wear")
+# print(clothing.ledger)
 create_spend_chart([food, clothing])
