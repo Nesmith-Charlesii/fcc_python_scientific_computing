@@ -95,7 +95,7 @@ def create_spend_chart(categories):
     
     def calculate_percentage(category_index):
         if category_index < 0:
-            print(percent_obj)
+            print(percent_obj, "\n")
         else:
             category = categories[category_index].category
             start_balance = next((i for i in categories[category_index].ledger if i['description'] == "initial deposit"), None)
@@ -103,13 +103,16 @@ def create_spend_chart(categories):
 
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
-                    expense_sum += (math.floor(abs(i["amount"])) / start_balance["amount"]) * 100
-            percent_obj[category] = expense_sum
+                    expense_sum += round((abs(i["amount"] / start_balance["amount"]) * 100))
+            # Round to nearest 10 with -1 in round method
+            percent_obj[category] = round(expense_sum, -1)
             return calculate_percentage(category_index - 1)
         
     calculate_percentage(category_index)
 
-    
+    return_chart = ""
+
+    #for i in range(0,101,10):
 
 food = Category("Food")
 clothing = Category("Clothing")
