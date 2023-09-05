@@ -91,12 +91,11 @@ class Category:
 def create_spend_chart(categories):
 
     category_index = (len(categories) - 1)
-    percent_obj = {}
+    category_list = []
     
     def calculate_percentage(category_index):
         if category_index < 0:
-            print(percent_obj, "\n")
-            return percent_obj
+            return category_list
         else:
             category = categories[category_index].category
             start_balance = next((i for i in categories[category_index].ledger if i['description'] == "initial deposit"), None)
@@ -104,21 +103,23 @@ def create_spend_chart(categories):
 
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
-                    expense_sum += round((abs(i["amount"] / start_balance["amount"]) * 100))
-            # Round to nearest 10 with -1 in round method
-            percent_obj[category] = round(expense_sum, -1)
+                    expense_sum += round((abs(i["amount"] / start_balance["amount"]) * 100))   
+            category_list.append({category: round(expense_sum, -1)})                 
             return calculate_percentage(category_index - 1)
         
     calculate_percentage(category_index)
 
-    return_chart = ""
+    chart = ""
 
     for i in range(100,-1,-10):
-        return_chart += f'{i:>{3}}|'
-        for i in range(0, len(categories)):
-            return_chart += f' o'
-        return_chart += "\n"
-    print(return_chart)
+        chart += f'{i:>{3}}|'
+        for cat in category_list:
+            # Casting view object to list from values method
+            percentage = list(cat.values())[0]
+            if percentage >= i:
+                chart += f' o'
+        chart += "\n"
+    print(chart)
 
 food = Category("Food")
 clothing = Category("Clothing")
