@@ -90,26 +90,25 @@ class Category:
 
 def create_spend_chart(categories):
 
-    chart_title = "Percentage spent by category"
     category_index = (len(categories) - 1)
-    expense_percentage = {}
+    return_str = ""
     
-    def percent_spent(category_index):
+    def percentage_spent(category_index):
         if category_index < 0:
-            return "recursion complete"
+            print(return_str)
         else:
-            category_name = categories[category_index].category
             expense_sum = 0
-
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
                     expense_sum += math.floor(abs(i["amount"]))
-            print(f'{chart_title}\n{category_name}: {expense_sum}%\n')
-            return percent_spent(category_index - 1)
+            
+            for i in range(0,101,10):
+                print(f'{i:>{3}}|')
+            return percentage_spent(category_index - 1)
         
-    percent_spent(category_index)
-
+    percentage_spent(category_index)
     
+
 food = Category("Food")
 clothing = Category("Clothing")
 
@@ -117,5 +116,9 @@ food.deposit(1000, "initial deposit")
 food.withdraw(10.15, "groceries")
 food.withdraw(15.898434, "restaurant and more food")
 food.transfer(50, clothing)
+
+clothing.withdraw(120, "Sunday best")
+clothing.withdraw(80, "Suit")
+clothing.withdraw(65, "Athletic Shoes")
 # print(food)
 create_spend_chart([food, clothing])
