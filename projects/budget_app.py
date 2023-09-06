@@ -114,14 +114,13 @@ def create_spend_chart(categories):
     chart = ""
     
     for i in range(100,-1,-10):
-        chart += f'{i:>{3}}|'
+        chart += f'{i:>{3}}| '
         for cat in sorted_list:
             percentage = cat["amount"]
-            if percentage >= i and cat == sorted_list[0]:
-                chart += f' o'
-            elif percentage >= i and not cat == sorted_list[0]:
-                chart += f'  o'
+            if percentage >= i:
+                chart += f'o  '
         chart += "\n"
+
     print(chart)
 
 food = Category("Food")
