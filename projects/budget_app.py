@@ -104,25 +104,29 @@ def create_spend_chart(categories):
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
                     expense_sum += round((abs(i["amount"] / start_balance["amount"]) * 100))   
-            category_list.append({category: round(expense_sum, -1)})                 
+            category_list.append({"category":category, "amount":round(expense_sum, -1)})                 
             return calculate_percentage(category_index - 1)
         
     calculate_percentage(category_index)
 
+    # Sort list so that chart iteration prints greatest to least amount
+    sorted_list = sorted(category_list, key=lambda i: i["amount"], reverse=True)
     chart = ""
-
+    
     for i in range(100,-1,-10):
         chart += f'{i:>{3}}|'
-        for cat in category_list:
-            # Casting view object to list from values method
-            percentage = list(cat.values())[0]
-            if percentage >= i:
+        for cat in sorted_list:
+            percentage = cat["amount"]
+            if percentage >= i and cat == sorted_list[0]:
                 chart += f' o'
+            elif percentage >= i and not cat == sorted_list[0]:
+                chart += f'  o'
         chart += "\n"
     print(chart)
 
 food = Category("Food")
 clothing = Category("Clothing")
+entertaiment = Category("Entertainment")
 
 food.deposit(1000, "initial deposit")
 food.withdraw(220.15, "groceries")
@@ -138,5 +142,15 @@ clothing.deposit(600, "initial deposit")
 clothing.withdraw(80.15, "sunday best")
 clothing.withdraw(55.00, "atheltic shoes")
 clothing.withdraw(120.00, "casual wear")
-# print(clothing.ledger)
-create_spend_chart([food, clothing])
+
+entertaiment.deposit(1200, "initial deposit")
+entertaiment.withdraw(220.15, "tv")
+entertaiment.withdraw(15.89, "aux cable")
+entertaiment.withdraw(20, "phone charger")
+entertaiment.withdraw(12, "remote control")
+entertaiment.withdraw(60, "led lights")
+entertaiment.withdraw(120, "computer monitor")
+entertaiment.withdraw(199, "bose speakers")
+entertaiment.transfer(200, food)
+
+create_spend_chart([food, clothing, entertaiment])
