@@ -127,7 +127,21 @@ def create_spend_chart(categories):
     dashes += "___" * (len(sorted_list)) + "_"
     chart += f'{dashes:>{len(dashes) + 4}}'
 
-    print(chart)
+    max_letter_count = 0
+    for c in categories:
+        if len(c.category) > max_letter_count:
+            max_letter_count = len(c.category)
+    
+    x_axis = ""
+    for k in range(0, max_letter_count):
+        for l in categories:
+            if len(l.category) > k:
+                x_axis += l.category[k]
+            else:
+                x_axis += " "
+        x_axis += f'\n'
+    print(x_axis)
+    #print(chart)
 
 food = Category("Food")
 clothing = Category("Clothing")
