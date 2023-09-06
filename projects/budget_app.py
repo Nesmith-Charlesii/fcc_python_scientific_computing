@@ -111,8 +111,9 @@ def create_spend_chart(categories):
 
     # Sort list so that chart iteration prints greatest to least amount
     sorted_list = sorted(category_list, key=lambda i: i["amount"], reverse=True)
-    chart = ""
-    
+    chart = f'Percentage spent by category\n'
+    dashes = ""
+
     for i in range(100,-1,-10):
         chart += f'{i:>{3}}| '
         for cat in sorted_list:
@@ -120,6 +121,11 @@ def create_spend_chart(categories):
             if percentage >= i:
                 chart += f'o  '
         chart += "\n"
+    
+    # For each category, there are 3 dashes
+    # Add one additional dash for the spacing between first bar of chart and y-axis
+    dashes += "___" * (len(sorted_list)) + "_"
+    chart += f'{dashes:>{len(dashes) + 4}}'
 
     print(chart)
 
