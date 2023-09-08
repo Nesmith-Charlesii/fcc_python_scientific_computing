@@ -140,10 +140,9 @@ def create_spend_chart(categories):
                 line_letters += f'{letter}  '
             else:
                 line_letters += "   "
-        print(line_letters)
-        chart += f'{line_letters}\n'
+        chart += f'     {line_letters}\n'
         line_letters = ""
-    #print(chart)
+    print(chart)
 
 
 food = Category("Food")
