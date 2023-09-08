@@ -125,11 +125,31 @@ def create_spend_chart(categories):
     # For each category, there are 3 dashes
     # Add one additional dash for the spacing between first bar of chart and y-axis
     dashes += "___" * (len(sorted_list)) + "_"
-    chart += f'{dashes:>{len(dashes) + 4}}\n'    
+    chart += f'{dashes:>{len(dashes) + 4}}\n'
+
+    max_letter_count = 0
+    for c in categories:
+        if len(c.category) > max_letter_count:
+            max_letter_count = len(c.category)
+    
+    line_letters = ""
+    for k in range(0, max_letter_count):
+        for item in sorted_list:
+            if len(item["category"]) > k:
+                letter = item["category"][k]
+                line_letters += f'{letter}  '
+            else:
+                line_letters += "   "
+        print(line_letters)
+        chart += f'{line_letters}\n'
+        line_letters = ""
+    #print(chart)
+
 
 food = Category("Food")
 clothing = Category("Clothing")
 entertaiment = Category("Entertainment")
+well_being = Category("Well Being")
 
 food.deposit(1000, "initial deposit")
 food.withdraw(220.15, "groceries")
@@ -156,4 +176,12 @@ entertaiment.withdraw(120, "computer monitor")
 entertaiment.withdraw(199, "bose speakers")
 entertaiment.transfer(200, food)
 
-create_spend_chart([food, clothing, entertaiment])
+well_being.deposit(800, "initial deposit")
+well_being.withdraw(200.15, "Spa")
+well_being.withdraw(50, "self-help book")
+well_being.withdraw(40, "massage")
+well_being.withdraw(60, "boxing pt")
+well_being.withdraw(120, "vacation")
+well_being.withdraw(140, "therapy")
+well_being.transfer(200, clothing)
+create_spend_chart([food, clothing, entertaiment, well_being])
