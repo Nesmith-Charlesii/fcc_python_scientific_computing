@@ -125,23 +125,7 @@ def create_spend_chart(categories):
     # For each category, there are 3 dashes
     # Add one additional dash for the spacing between first bar of chart and y-axis
     dashes += "___" * (len(sorted_list)) + "_"
-    chart += f'{dashes:>{len(dashes) + 4}}'
-
-    max_letter_count = 0
-    for c in categories:
-        if len(c.category) > max_letter_count:
-            max_letter_count = len(c.category)
-    
-    x_axis = ""
-    for k in range(0, max_letter_count):
-        for l in categories:
-            if len(l.category) > k:
-                x_axis += l.category[k]
-            else:
-                x_axis += " "
-        x_axis += f'\n'
-    print(x_axis)
-    #print(chart)
+    chart += f'{dashes:>{len(dashes) + 4}}\n'    
 
 food = Category("Food")
 clothing = Category("Clothing")
