@@ -22,7 +22,6 @@ class Category:
 
         expense_sum = 0
         start_balance = next((i for i in self.ledger if i['description'] == "initial deposit"), None)
-        total = float(start_balance["amount"] + expense_sum)
 
         def float_two_spaces(amount):
             # Float the amount first and then change to str data type to use the index method
@@ -69,7 +68,7 @@ class Category:
         self.ledger.append(deposit_obj)
         #print(f'{self.category} ledger: {self.ledger}')
 
-    def withdraw(self, amount, description):
+    def withdraw(self, amount, description=""):
         funds = self.check_funds(amount)
         if funds:
             self.ledger.append({"amount": -amount, "description": description})
