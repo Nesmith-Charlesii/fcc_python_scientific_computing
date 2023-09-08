@@ -35,7 +35,7 @@ class Category:
                 split_decimal[1] = split_decimal[1] + "0"
                 float_amount = ".".join(split_decimal)
 
-            return float(float_amount)
+            return float_amount
 
         for i in self.ledger:
             description = ""
@@ -46,8 +46,8 @@ class Category:
             
             float_amount = float_two_spaces(i["amount"])
 
-            if float_amount < 0:
-                expense_sum += float_amount
+            if float(float_amount) < 0:
+                expense_sum += float(float_amount)
 
             desc_length = len(description)
             right_align = 30 - desc_length
@@ -205,4 +205,4 @@ print(food, "\n")
 # print(entertaiment)
 # print(well_being)
 
-create_spend_chart([food, clothing, entertaiment, well_being])
+#create_spend_chart([food, clothing, entertaiment, well_being])
