@@ -21,7 +21,7 @@ class Category:
         ledger_str += f'{banner}\n'
 
         expense_sum = 0
-        start_balance = next((i for i in self.ledger if i['description'] == "initial deposit"), None)
+        start_balance = 0
 
         def float_two_spaces(amount):
             # Float the amount first and then change to str data type to use the index method
@@ -46,7 +46,9 @@ class Category:
             
             float_amount = float_two_spaces(i["amount"])
 
-            if float(float_amount) < 0:
+            if float(float_amount) > -1:
+                start_balance += float(float_amount)
+            elif float(float_amount) < 0:
                 expense_sum += float(float_amount)
 
             desc_length = len(description)
@@ -55,7 +57,7 @@ class Category:
             ledger_str += f'{description}{float_amount:>{right_align}}\n'
             # ACCOUNT FOR TRANSACTION GREATER THAN 7 DIGITS
 
-        total = start_balance["amount"] + expense_sum
+        total = start_balance + expense_sum
         ledger_str += f'Total: {total}'
 
         return ledger_str
@@ -113,12 +115,11 @@ def create_spend_chart(categories):
             return category_list
         else:
             category = categories[category_index].category
-            start_balance = next((i for i in categories[category_index].ledger if i['description'] == "initial deposit"), None)
             expense_sum = 0
 
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
-                    expense_sum += round((abs(i["amount"] / start_balance["amount"]) * 100))   
+                    expense_sum += round(abs(i["amount"]) / 10) 
             category_list.append({"category":category, "amount":round(expense_sum, -1)})                 
             return calculate_percentage(category_index - 1)
         
@@ -128,7 +129,7 @@ def create_spend_chart(categories):
     sorted_list = sorted(category_list, key=lambda i: i["amount"], reverse=True)
     chart = f'Percentage spent by category\n'
     dashes = ""
-
+    
     for i in range(100,-1,-10):
         chart += f'{i:>{3}}| '
         for cat in sorted_list:
