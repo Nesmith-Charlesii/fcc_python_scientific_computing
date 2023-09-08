@@ -18,31 +18,47 @@ class Category:
             split_category.insert(0, "*")
         
         banner = "".join(split_category)
-        print(banner)
+        ledger_str += f'{banner}\n'
+
+        expense_sum = 0
+        start_balance = next((i for i in self.ledger if i['description'] == "initial deposit"), None)
+        total = float(start_balance["amount"] + expense_sum)
+
+        def float_two_spaces(amount):
+            # Float the amount first and then change to str data type to use the index method
+            float_amount = str(float(amount))
+            decimal_index = float_amount.index(".")
+            float_amount = float_amount[0:(decimal_index + 3)]
+
+            # Check that all amounts end with 2 digits
+            split_decimal = float_amount.split(".")
+            if len(split_decimal[1]) < 2:
+                split_decimal[1] = split_decimal[1] + "0"
+                float_amount = ".".join(split_decimal)
+
+            return float(float_amount)
 
         for i in self.ledger:
             description = ""
-            amount = None
+            
             if len(i["description"]) > 23:
                 description += i["description"][0:23]
             else: description += i["description"]
             
-            # Float the amount first and then change to str data type to use the index method
-            amount = str(float(i["amount"]))
-            decimal_index = amount.index(".")
-            amount = amount[0:(decimal_index + 3)]
+            float_amount = float_two_spaces(i["amount"])
 
-            # Check that all amounts end with 2 digits
-            split_decimal = amount.split(".")
-            if len(split_decimal[1]) < 2:
-                split_decimal[1] = split_decimal[1] + "0"
-                amount = ".".join(split_decimal)
+            if float_amount < 0:
+                expense_sum += float_amount
 
             desc_length = len(description)
             right_align = 30 - desc_length
 
-            ledger_str += f'{description}{amount:>{right_align}}\n'
+            ledger_str += f'{description}{float_amount:>{right_align}}\n'
             # ACCOUNT FOR TRANSACTION GREATER THAN 7 DIGITS
+
+        total = start_balance["amount"] + expense_sum
+        ledger_str += f'Total: {total}'
+
         return ledger_str
 
     def deposit(self, amount, description=""):
@@ -143,6 +159,7 @@ def create_spend_chart(categories):
         chart += f'     {line_letters}\n'
         line_letters = ""
     print(chart)
+    return chart
 
 
 food = Category("Food")
@@ -183,4 +200,10 @@ well_being.withdraw(60, "boxing pt")
 well_being.withdraw(120, "vacation")
 well_being.withdraw(140, "therapy")
 well_being.transfer(200, clothing)
+
+print(food, "\n")
+# print(clothing)
+# print(entertaiment)
+# print(well_being)
+
 create_spend_chart([food, clothing, entertaiment, well_being])
