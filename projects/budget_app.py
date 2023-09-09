@@ -119,12 +119,15 @@ def create_spend_chart(categories):
 
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
-                    expense_sum += round(abs(i["amount"]) / 10) 
-            category_list.append({"category":category, "amount":round(expense_sum, -1)})                 
+                    expense_sum += abs(i["amount"])
+            category_list.append({"category":category, "amount": expense_sum})        
             return calculate_percentage(category_index - 1)
         
     calculate_percentage(category_index)
 
+    key_to_sum = "amount"
+    total_spent = sum(i[key_to_sum] for i in category_list)
+    
     # Sort list so that chart iteration prints greatest to least amount
     sorted_list = sorted(category_list, key=lambda i: i["amount"], reverse=True)
     chart = f'Percentage spent by category\n'
@@ -143,7 +146,7 @@ def create_spend_chart(categories):
     
     # For each category, there are 3 dashes
     # Add one additional dash for the spacing between first bar of chart and y-axis
-    dashes += "___" * (len(sorted_list)) + "_"
+    dashes += "---" * (len(sorted_list)) + "-"
     chart += f'{dashes:>{len(dashes) + 4}}\n'
 
     max_letter_count = 0
@@ -152,8 +155,9 @@ def create_spend_chart(categories):
             max_letter_count = len(c.category)
     
     line_letters = ""
+    category_list.reverse()
     for k in range(0, max_letter_count):
-        for item in sorted_list:
+        for item in category_list:
             if len(item["category"]) > k:
                 letter = item["category"][k]
                 line_letters += f'{letter}  '
@@ -162,51 +166,66 @@ def create_spend_chart(categories):
         chart += f'     {line_letters}\n'
         line_letters = ""
     print(chart)
-    return chart.strip()
+    return chart
 
 
-food = Category("Food")
-clothing = Category("Clothing")
-entertaiment = Category("Entertainment")
-well_being = Category("Well Being")
+# food = Category("Food")
+# clothing = Category("Clothing")
+# entertaiment = Category("Entertainment")
+# well_being = Category("Well Being")
 
-food.deposit(1000, "initial deposit")
-food.withdraw(220.15, "groceries")
-food.withdraw(15.898434, "restaurant and more food")
-food.withdraw(20, "starbucks")
-food.withdraw(32, "thaiphoon bistro")
-food.withdraw(30, "rock n' roll sushi")
-food.withdraw(70, "Cowfish Sushi Bar")
-food.withdraw(65, "Crafty Crab")
-food.transfer(50, clothing)
+# food.deposit(1000, "initial deposit")
+# food.withdraw(220.15, "groceries")
+# food.withdraw(15.898434, "restaurant and more food")
+# food.withdraw(20, "starbucks")
+# food.withdraw(32, "thaiphoon bistro")
+# food.withdraw(30, "rock n' roll sushi")
+# food.withdraw(70, "Cowfish Sushi Bar")
+# food.withdraw(65, "Crafty Crab")
+# food.transfer(50, clothing)
 
-clothing.deposit(600, "initial deposit")
-clothing.withdraw(80.15, "sunday best")
-clothing.withdraw(55.00, "atheltic shoes")
-clothing.withdraw(120.00, "casual wear")
+# clothing.deposit(600, "initial deposit")
+# clothing.withdraw(80.15, "sunday best")
+# clothing.withdraw(55.00, "atheltic shoes")
+# clothing.withdraw(120.00, "casual wear")
 
-entertaiment.deposit(1200, "initial deposit")
-entertaiment.withdraw(220.15, "tv")
-entertaiment.withdraw(15.89, "aux cable")
-entertaiment.withdraw(20, "phone charger")
-entertaiment.withdraw(12, "remote control")
-entertaiment.withdraw(60, "led lights")
-entertaiment.withdraw(120, "computer monitor")
-entertaiment.withdraw(199, "bose speakers")
-entertaiment.transfer(200, food)
+# entertaiment.deposit(1200, "initial deposit")
+# entertaiment.withdraw(220.15, "tv")
+# entertaiment.withdraw(15.89, "aux cable")
+# entertaiment.withdraw(20, "phone charger")
+# entertaiment.withdraw(12, "remote control")
+# entertaiment.withdraw(60, "led lights")
+# entertaiment.withdraw(120, "computer monitor")
+# entertaiment.withdraw(199, "bose speakers")
+# entertaiment.transfer(200, food)
 
-well_being.deposit(800, "initial deposit")
-well_being.withdraw(200.15, "Spa")
-well_being.withdraw(50, "self-help book")
-well_being.withdraw(40, "massage")
-well_being.withdraw(60, "boxing pt")
-well_being.withdraw(120, "vacation")
-well_being.withdraw(140, "therapy")
-well_being.transfer(200, clothing)
+# well_being.deposit(800, "initial deposit")
+# well_being.withdraw(200.15, "Spa")
+# well_being.withdraw(50, "self-help book")
+# well_being.withdraw(40, "massage")
+# well_being.withdraw(60, "boxing pt")
+# well_being.withdraw(120, "vacation")
+# well_being.withdraw(140, "therapy")
+# well_being.transfer(200, clothing)
 
 #print(food, "\n")
 # print(clothing)
 # print(entertaiment)
 # print(well_being)
 
-create_spend_chart([food, clothing, entertaiment, well_being])
+#create_spend_chart([food, clothing, entertaiment, well_being])
+
+food = Category("Food")
+entertainment= Category("Entertainment")
+business = Category("Business")
+
+food.deposit(900, "deposit")
+entertainment.deposit(900, "deposit")
+business.deposit(900, "deposit")
+food.withdraw(105.55)
+entertainment.withdraw(33.40)
+business.withdraw(10.99)
+
+print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
+print("\n")
+create_spend_chart([business, food, entertainment])
