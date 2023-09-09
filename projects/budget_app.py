@@ -132,19 +132,16 @@ def create_spend_chart(categories):
             return calculate_percentage(category_index - 1)
         
     calculate_percentage(category_index)
-    print(category_list)
+    
     chart = f'Percentage spent by category\n'
     dashes = ""
     
     for i in range(100,-1,-10):
-        chart += f'{i:>{3}}|'
+        chart += f'{i:>{3}}| '
         for cat in category_list:
             percentage = cat["percentage"]
             if percentage >= i:
-                chart += (
-                    f'{"o":>2}' if category_list.index(cat) == 0 else
-                    f'{"o":>3}'
-                )
+                chart += f'o  '
         chart += "\n"
     
     # For each category, there are 3 dashes
@@ -158,7 +155,6 @@ def create_spend_chart(categories):
             max_letter_count = len(c.category)
     
     line_letters = ""
-    category_list.reverse()
     for k in range(0, max_letter_count):
         for item in category_list:
             if len(item["category"]) > k:
