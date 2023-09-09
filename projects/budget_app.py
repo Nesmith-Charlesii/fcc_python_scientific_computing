@@ -120,33 +120,36 @@ def create_spend_chart(categories):
             for i in categories[category_index].ledger:
                 if i["amount"] < 0:
                     expense_sum += abs(i["amount"])
-            category_list.append({"category":category, "amount": expense_sum})        
+            category_list.append({"category":category, "amount": expense_sum})
+
+            if category_index == 0:
+                key_to_sum = "amount"
+                total_spent = sum(i[key_to_sum] for i in category_list)
+
+                for i in category_list:
+                    percent = (i["amount"] * 100) / total_spent
+                    i["percentage"] = round(percent, -1)
             return calculate_percentage(category_index - 1)
         
     calculate_percentage(category_index)
-
-    key_to_sum = "amount"
-    total_spent = sum(i[key_to_sum] for i in category_list)
-    
-    # Sort list so that chart iteration prints greatest to least amount
-    sorted_list = sorted(category_list, key=lambda i: i["amount"], reverse=True)
+    print(category_list)
     chart = f'Percentage spent by category\n'
     dashes = ""
     
     for i in range(100,-1,-10):
         chart += f'{i:>{3}}|'
-        for cat in sorted_list:
-            percentage = cat["amount"]
+        for cat in category_list:
+            percentage = cat["percentage"]
             if percentage >= i:
                 chart += (
-                    f'{"o":>2}' if sorted_list.index(cat) == 0 else
+                    f'{"o":>2}' if category_list.index(cat) == 0 else
                     f'{"o":>3}'
                 )
         chart += "\n"
     
     # For each category, there are 3 dashes
     # Add one additional dash for the spacing between first bar of chart and y-axis
-    dashes += "---" * (len(sorted_list)) + "-"
+    dashes += "---" * (len(category_list)) + "-"
     chart += f'{dashes:>{len(dashes) + 4}}\n'
 
     max_letter_count = 0
@@ -226,6 +229,6 @@ food.withdraw(105.55)
 entertainment.withdraw(33.40)
 business.withdraw(10.99)
 
-print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
+#print("Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  ")
 print("\n")
 create_spend_chart([business, food, entertainment])
