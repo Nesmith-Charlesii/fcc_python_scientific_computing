@@ -131,11 +131,14 @@ def create_spend_chart(categories):
     dashes = ""
     
     for i in range(100,-1,-10):
-        chart += f'{i:>{3}}| '
+        chart += f'{i:>{3}}|'
         for cat in sorted_list:
             percentage = cat["amount"]
             if percentage >= i:
-                chart += f'o  '
+                chart += (
+                    f'{"o":>2}' if sorted_list.index(cat) == 0 else
+                    f'{"o":>3}'
+                )
         chart += "\n"
     
     # For each category, there are 3 dashes
@@ -159,7 +162,7 @@ def create_spend_chart(categories):
         chart += f'     {line_letters}\n'
         line_letters = ""
     print(chart)
-    return chart
+    return chart.strip()
 
 
 food = Category("Food")
@@ -201,9 +204,9 @@ well_being.withdraw(120, "vacation")
 well_being.withdraw(140, "therapy")
 well_being.transfer(200, clothing)
 
-print(food, "\n")
+#print(food, "\n")
 # print(clothing)
 # print(entertaiment)
 # print(well_being)
 
-#create_spend_chart([food, clothing, entertaiment, well_being])
+create_spend_chart([food, clothing, entertaiment, well_being])
