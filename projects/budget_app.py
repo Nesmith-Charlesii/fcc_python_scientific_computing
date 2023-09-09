@@ -128,6 +128,8 @@ def create_spend_chart(categories):
 
                 for i in category_list:
                     percent = (i["amount"] * 100) / total_spent
+                    if percent < 10:
+                        percent = 0
                     i["percentage"] = round(percent, -1)
             return calculate_percentage(category_index - 1)
         
@@ -135,7 +137,7 @@ def create_spend_chart(categories):
     
     chart = f'Percentage spent by category\n'
     dashes = ""
-    
+    print(category_list)
     for i in range(100,-1,-10):
         chart += f'{i:>{3}}| '
         for cat in category_list:
