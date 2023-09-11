@@ -2,6 +2,11 @@ class Rectangle:
     def __init__(self, width, height) -> None:
         self.width = width
         self.height = height
+
+    def __str__(self) -> str:
+        if self.width == self.height:
+            return f'Square(width={self.width}, height={self.height})'
+        else: return f'Rectangle(width={self.width}, height={self.height})'
     
     def set_width(self):
         pass
@@ -31,6 +36,11 @@ class Rectangle:
     
     def get_amount_inside(self, shape):
         pass
+
+shape = Rectangle(5,10)
+print(shape)
+
+
 
 class Square:
     pass
