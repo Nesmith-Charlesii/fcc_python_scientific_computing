@@ -37,7 +37,10 @@ class Rectangle:
             return picture
     
     def get_amount_inside(self, shape):
-        pass
+        amount_row = self.width / shape.width
+        amount_column = self.height / shape.height
+        amount_inside = int(amount_column * amount_row)
+        return amount_inside
 
 
 class Square(Rectangle):
@@ -50,7 +53,7 @@ class Square(Rectangle):
     
     def set_side(self, side):
         super().set_height(side)
-        super().set_height(side)
+        super().set_width(side)
 
     def set_width(self, side):
         super().set_width(side)
@@ -68,3 +71,16 @@ rectangle.set_height(3)
 print(rectangle.get_perimeter())
 print(rectangle)
 print(rectangle.get_picture())
+
+square = Square(9)
+print(square.get_area())
+square.set_side(4)
+print(square.get_diagonal())
+print(square)
+print(square.get_picture())
+
+rectangle.set_height(8)
+rectangle.set_width(16)
+print(rectangle)
+print(square)
+print(rectangle.get_amount_inside(square))
