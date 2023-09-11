@@ -4,15 +4,13 @@ class Rectangle:
         self.height = height
 
     def __str__(self) -> str:
-        if self.width == self.height:
-            return f'Square(width={self.width}, height={self.height})'
-        else: return f'Rectangle(width={self.width}, height={self.height})'
+        return f'Rectangle(width={self.width}, height={self.height})'
     
-    def set_width(self):
-        pass
+    def set_width(self, width):
+        self.width = width
 
-    def set_height(self):
-        pass
+    def set_height(self, height):
+        self.height = height
 
     def get_area(self):
         area = self.width * self.height
@@ -37,10 +35,29 @@ class Rectangle:
     def get_amount_inside(self, shape):
         pass
 
-shape = Rectangle(5,10)
-print(shape)
 
+class Square(Rectangle):
+    def __init__(self, side) -> None:
+        self.width = side
+        self.height = side
 
+    def __str__(self) -> str:
+        return f'Square(side={self.width})'
+    
+    def set_side(self):
+        pass
 
-class Square:
-    pass
+    def set_width(self, side):
+        super().set_width(side)
+        super().set_height(side)
+    
+    def set_height(self, side):
+        super().set_width(side)
+        super().set_height(side)
+    
+
+rectangle = Rectangle(5,10)
+print(rectangle)
+
+square = Square(5)
+print(square)
