@@ -34,9 +34,9 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
     global match_count
     if num_experiments < 1:
         if ball_outcome == expected_balls:
-            print(f'ball_outcome: {ball_outcome}\n** matches **\nexpected_balls: {expected_balls}\nmatch_count: {match_count}')
+            print(f'\nball_outcome: {ball_outcome}\n** matches **\nexpected_balls: {expected_balls}\nmatch_count: {match_count}')
         else: 
-            print(f'expected outcome does not match outcome\nexpected_balls: {expected_balls}** does not match **ball_outcome: {ball_outcome}')
+            print(f'no matches')
     else:
         # Using copy.deepcopy as to not affect the original instance
         hat_copy = copy.deepcopy(hat)
@@ -45,7 +45,9 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
         for k,v in expected_balls.items():
             if balls_drawn.count(k) == v:
                 ball_outcome[k] = v
-                match_count += 1
+        
+        if ball_outcome == expected_balls:
+            match_count += 1
         print("outcome", ball_outcome)
         experiment(hat, expected_balls, num_balls_drawn, num_experiments=num_experiments-1)
 
