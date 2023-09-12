@@ -1,5 +1,8 @@
 import copy
 import random
+import sys
+
+sys.setrecursionlimit(3500)
 
 class Hat:
     def __init__(self, **kwargs) -> None:
@@ -56,7 +59,11 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
             match_count += 1
         
         experiment_count += 1
-        experiment(hat, expected_balls, num_balls_drawn, num_experiments=num_experiments-1)
+        experiment(
+            hat, 
+            expected_balls, 
+            num_balls_drawn, 
+            num_experiments=num_experiments-1)
 
 hat1 = Hat(black=6, red=4, green=3)
 #hat1.draw(4)
@@ -64,5 +71,5 @@ experiment(
     hat=hat1,
     expected_balls={"red": 2, "green": 1},
     num_balls_drawn=5,
-    num_experiments=3
+    num_experiments=2000
 )
