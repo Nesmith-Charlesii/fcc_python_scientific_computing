@@ -30,11 +30,17 @@ class Hat:
 
 ball_outcome = {}
 match_count = 0
+experiment_count = 0 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
     global match_count
+    global experiment_count
+
     if num_experiments < 1:
         if ball_outcome == expected_balls:
-            print(f'\nball_outcome: {ball_outcome}\n** matches **\nexpected_balls: {expected_balls}\nmatch_count: {match_count}')
+            print(f'ball_outcome: {ball_outcome}\n** matches **\nexpected_balls: {expected_balls}\nmatch_count: {match_count}')
+            probability = match_count/experiment_count
+            print(f'probability: {probability}')
+            return probability
         else: 
             print(f'no matches')
     else:
@@ -48,7 +54,8 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
         
         if ball_outcome == expected_balls:
             match_count += 1
-        print("outcome", ball_outcome)
+        
+        experiment_count += 1
         experiment(hat, expected_balls, num_balls_drawn, num_experiments=num_experiments-1)
 
 hat1 = Hat(black=6, red=4, green=3)
