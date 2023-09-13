@@ -1,8 +1,5 @@
 import copy
 import random
-import sys
-
-sys.setrecursionlimit(3500)
 
 class Hat:
     def __init__(self, **kwargs) -> None:
@@ -33,14 +30,16 @@ class Hat:
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
     match_count = 0
     balls_found = {}
+    print(f'Expected balls ---> {expected_balls}\n')
     for i in range(num_experiments):
         hat_copy = copy.deepcopy(hat)
         balls_drawn = hat_copy.draw(num_balls_drawn)
         for k,v in expected_balls.items():
             if balls_drawn.count(k) >= v:
                 balls_found[k] = v
-        
-        match_count += 1 if balls_found == expected_balls else 0
+                print(f'Balls found: {balls_found}')
+                match_count += 1 if balls_found == expected_balls else 0
+
     print(f'match_count: {match_count}/{num_experiments}\nprobability: {match_count/num_experiments}')
     return match_count/num_experiments
 
