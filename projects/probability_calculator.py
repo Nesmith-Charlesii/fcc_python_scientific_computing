@@ -22,54 +22,33 @@ class Hat:
         if draw_count > len(self.contents):
             print(f'draw count exceeds amount of balls in hat ***** {self.contents}')
             return self.contents
-        
-        balls_drawn = []
-        for i in range(0, draw_count):
-            choice = self.contents.pop(random.randrange(0, len(self.contents)))
-            balls_drawn.append(choice)
-
-        return balls_drawn
-
-
-ball_outcome = {}
-match_count = 0
-experiment_count = 0 
-def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
-    global match_count
-    global experiment_count
-
-    if num_experiments < 1:
-        if ball_outcome == expected_balls:
-            print(f'ball_outcome: {ball_outcome}\n** matches **\nexpected_balls: {expected_balls}\nmatch_count: {match_count}')
-            probability = match_count/experiment_count
-            print(f'probability: {probability}')
-            return probability
         else: 
-            print(f'no matches')
-    else:
-        # Using copy.deepcopy as to not affect the original instance
+            balls_drawn = []
+            for i in range(0, draw_count):
+                balls_taken = self.contents.pop(random.randrange(0, len(self.contents)))
+                balls_drawn.append(balls_taken)
+
+            return balls_drawn
+
+def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
+    match_count = 0
+    balls_found = {}
+    for i in range(num_experiments):
         hat_copy = copy.deepcopy(hat)
         balls_drawn = hat_copy.draw(num_balls_drawn)
-
         for k,v in expected_balls.items():
-            if balls_drawn.count(k) == v:
-                ball_outcome[k] = v
+            if balls_drawn.count(k) >= v:
+                balls_found[k] = v
         
-        if ball_outcome == expected_balls:
-            match_count += 1
-        
-        experiment_count += 1
-        experiment(
-            hat, 
-            expected_balls, 
-            num_balls_drawn, 
-            num_experiments=num_experiments-1)
+        match_count += 1 if balls_found == expected_balls else 0
+    print(f'match_count: {match_count}/{num_experiments}\nprobability: {match_count/num_experiments}')
+    return match_count/num_experiments
 
-hat1 = Hat(black=6, red=4, green=3)
+hat1 = Hat(blue=3,red=2,green=6)
 #hat1.draw(4)
 experiment(
     hat=hat1,
-    expected_balls={"red": 2, "green": 1},
-    num_balls_drawn=5,
-    num_experiments=2000
+    expected_balls={"blue":2,"green":1},
+    num_balls_drawn=4,
+    num_experiments=4
 )
